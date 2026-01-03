@@ -1,10 +1,10 @@
 import './checkbox.css'
 
-function CustomCheckBox() {
+function CustomCheckBox({id}) {
     return (
         <div className="checkbox-wrapper">
-            <input type="checkbox" className="check" id="check1-61" />
-            <label htmlFor="check1-61" className="label">
+            <input type="checkbox" className="check" id={id} />
+            <label htmlFor={id} className="label">
                 <svg width="45" height="45" viewBox="0 0 95 95">
                     <rect x="30" y="20" width="50" height="50" stroke="black" fill="none" />
                     <g transform="translate(0,-952.36222)">

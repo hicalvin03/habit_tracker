@@ -1,0 +1,76 @@
+h1 {
+  font-size: 3.1em;
+  line-height: 1.1;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  display: grid;
+  place-items: start center; /* Aligns to top and sideways center */
+  min-height: 100vh;
+  padding: 5%;
+  background-color: #BCDFCE;
+  font-family: 'Silkscreen', sans-serif;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  border: 2px solid #4CAF50;
+  border-radius: 12px;
+  padding: 1px 20px;        /* space inside the box */
+  background-color: #d4f8d4; /* light background */
+  transition: all 0.1s ease; /* smooth hover effect */
+}
+
+#f0fff0
+.task-text {
+    margin-left: 10px;
+}
+
+.bin-button {
+  margin-left: auto;
+}
+
+li:hover {
+  background-color: #c1f5c1;
+  transform: scale(1.02);    /* subtle scale effect */
+}
+
+input {
+  outline: 2px solid black; 
+  text-indent: 10px;
+}
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: #CEE3BE;
+  border-radius: 20px;
+  padding: 0% 3%;
+  width: 800px;
+  max-width: 95%;    /* fallback for smaller screens */
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+button {
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 10px 1px;
+}
+
+button:hover {
+  color: blue;
+  background-color: lightcyan;
+}
+
+
+
