@@ -4,14 +4,13 @@ h1 {
   text-align: center;
 }
 
-body {
-  margin: 0;
-  display: grid;
-  place-items: start center; /* Aligns to top and sideways center */
-  min-height: 100vh;
-  padding: 5%;
-  background-color: #BCDFCE;
-  font-family: 'Silkscreen', sans-serif;
+.todopage {
+  display: flex;
+  gap: 20px;
+}
+
+.lookbackImage img{
+  border-radius: 20px;
 }
 
 li {
@@ -25,7 +24,7 @@ li {
   transition: all 0.1s ease; /* smooth hover effect */
 }
 
-#f0fff0
+
 .task-text {
     margin-left: 10px;
 }

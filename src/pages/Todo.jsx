@@ -20,7 +20,7 @@ function FormInput({ newtask, setNewTask, addTask }) {
     );
 }
 
-function TaskItem({tasks}){ //Responsible for displaying each task item.
+function TaskItem({tasks,deleteTask}){ //Responsible for displaying each task item.
     return(
         tasks.map((task)=> 
             <li key={task.id}>
@@ -28,14 +28,17 @@ function TaskItem({tasks}){ //Responsible for displaying each task item.
                     id={task.id}
                 />
                 <span className="task-text">{task.text}</span>
-                <DeleteButton/>
+                <DeleteButton
+                    taskid={task.id}
+                    deleteTask={deleteTask}
+                />
             </li>)
     )
 }
 
 //tasks { id, text, checked, active}
 
-function Todo() {
+function TodoPage() {
     const [tasks, setTasks] = useState(()=>{
         const savedTasks = localStorage.getItem("habits_list");
         return savedTasks ? JSON.parse(savedTasks) : [];
@@ -65,23 +68,34 @@ function Todo() {
         }
     }
 
+    function deleteTask(taskid){
+        setTasks(tasks.filter((task)=>taskid!==task.id))
+    }
+
     return (
-        <div className="todo">
-            <h1 className="Title">Habits List:</h1>
-
-            <FormInput 
-                newtask={newtask} 
-                setNewTask={setNewTask} 
-                addTask={addTask} 
-            />
-
-            <ol id="tasks-list">
-                <TaskItem
-                    tasks={tasks}
+    
+        <div className="todopage">
+            <div className="todo">
+                <h1 className="Title">Habits List:</h1>
+                <FormInput 
+                    newtask={newtask} 
+                    setNewTask={setNewTask} 
+                    addTask={addTask} 
                 />
-            </ol>
+                <ol id="tasks-list">
+                    <TaskItem 
+                    tasks={tasks}
+                    deleteTask={deleteTask}
+                    />
+                </ol>
+            </div>
+
+            <div className="lookbackImage">
+                <img src="/lookback night.png" alt="Lookback" />
+            </div>
         </div>
+    
     );
 }
 
-export default Todo;
+export default TodoPage;

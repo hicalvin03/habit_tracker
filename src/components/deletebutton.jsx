@@ -1,8 +1,8 @@
 import './deletebutton.css'
 
-function DeleteButton(){
+function DeleteButton({taskid,deleteTask}){
     return(
-        <button className="bin-button">
+        <button className="bin-button" onClick={()=>deleteTask(taskid)}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
