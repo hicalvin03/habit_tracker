@@ -1,9 +1,9 @@
 import './checkbox.css'
 
-function CustomCheckBox({id}) {
+function CustomCheckBox({id, updateCheck}) {
     return (
         <div className="checkbox-wrapper">
-            <input type="checkbox" className="check" id={id} />
+            <input type="checkbox" className="check" id={id} onClick={()=>updateCheck(id)}/>
             <label htmlFor={id} className="label">
                 <svg width="45" height="45" viewBox="0 0 95 95">
                     <rect x="30" y="20" width="50" height="50" stroke="black" fill="none" />

@@ -1,8 +1,9 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef} from "react";
 import './Todo.css'
 import CustomCheckBox from "../components/checkbox"
 import SubmitButton from "../components/button"
 import DeleteButton from "../components/deletebutton"
+import NoFace from "../components/nofaceAnimation"
 
 function FormInput({ newtask, setNewTask, addTask }) {
     return (
@@ -20,12 +21,13 @@ function FormInput({ newtask, setNewTask, addTask }) {
     );
 }
 
-function TaskItem({tasks,deleteTask}){ //Responsible for displaying each task item.
+function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying each task item.
     return(
         tasks.map((task)=> 
             <li key={task.id}>
                 <CustomCheckBox
                     id={task.id}
+                    updateCheck={updateCheck}
                 />
                 <span className="task-text">{task.text}</span>
                 <DeleteButton
@@ -37,7 +39,6 @@ function TaskItem({tasks,deleteTask}){ //Responsible for displaying each task it
 }
 
 //tasks { id, text, checked, active}
-
 function TodoPage() {
     const [tasks, setTasks] = useState(()=>{
         const savedTasks = localStorage.getItem("habits_list");
@@ -45,12 +46,46 @@ function TodoPage() {
     });
 
     const [newtask, setNewTask] = useState("");
+    const [currImage, setCurrentImage] = useState("lookbackmorning.PNG")
+
+    const AnimationRef = useRef();
+    const prevTasksRef = useRef(tasks);
 
     useEffect(() => {
         localStorage.setItem("habits_list", JSON.stringify(tasks));
     }, [tasks]);
 
+    useEffect(()=> { //If a new checkbox is ticked play animation
+        const prevTasks = prevTasksRef.current ?? [];
+        
+        const numPrevChecked = prevTasks.filter((prevTask)=>
+            prevTask.checked
+        )
+        const numCurrentchecked = tasks.filter((task)=>
+            task.checked
+        )
+        if (numCurrentchecked.length > numPrevChecked.length){
+            AnimationRef.current.play()
+        }
+        
+        prevTasksRef.current = tasks
 
+    }, [tasks]);
+
+    useEffect(()=> { //changes image based on time
+        const hour = new Date().getHours()
+        if (hour < 12){
+            setCurrentImage("./lookbackmorning.PNG")
+        } else if (hour < 18){
+            setCurrentImage("./lookbackafternoon.png")
+        }
+        else {
+            setCurrentImage("./lookbacknight.png")
+        }
+    }, []);
+    
+
+                
     function addTask(event) {
         event.preventDefault();
         if (newtask.trim() !== "") {
@@ -72,6 +107,13 @@ function TodoPage() {
         setTasks(tasks.filter((task)=>taskid!==task.id))
     }
 
+    function updateCheck(taskid){
+        setTasks((prevTasks)=>
+            prevTasks.map((task)=>
+                task.id==taskid?{...task, checked: !task.checked}:task
+            ))
+    }
+
     return (
     
         <div className="todopage">
@@ -86,13 +128,21 @@ function TodoPage() {
                     <TaskItem 
                     tasks={tasks}
                     deleteTask={deleteTask}
+                    updateCheck={updateCheck}
                     />
                 </ol>
             </div>
 
-            <div className="lookbackImage">
-                <img src="/lookback night.png" alt="Lookback" />
+            <div className="rightsideBar">
+                <div className="lookbackImage">
+                    <img src={currImage} alt="Lookback" />
+                </div>
+                <NoFace
+                    AnimationRef={AnimationRef}
+                />
+                <span>Do a task to make him happy!</span>
             </div>
+
         </div>
     
     );
