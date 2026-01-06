@@ -28,6 +28,7 @@ function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying 
                 <CustomCheckBox
                     id={task.id}
                     updateCheck={updateCheck}
+                    checked={task.checked}
                 />
                 <span className="task-text">{task.text}</span>
                 <DeleteButton
@@ -39,11 +40,7 @@ function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying 
 }
 
 //tasks { id, text, checked, active}
-function TodoPage() {
-    const [tasks, setTasks] = useState(()=>{
-        const savedTasks = localStorage.getItem("habits_list");
-        return savedTasks ? JSON.parse(savedTasks) : [];
-    });
+function TodoPage({tasks,setTasks}) {
 
     const [newtask, setNewTask] = useState("");
     const [currImage, setCurrentImage] = useState("lookbackmorning.PNG")
@@ -83,9 +80,7 @@ function TodoPage() {
             setCurrentImage("./lookbacknight.png")
         }
     }, []);
-    
-
-                
+            
     function addTask(event) {
         event.preventDefault();
         if (newtask.trim() !== "") {

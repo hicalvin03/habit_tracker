@@ -19,3 +19,9 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     margin-bottom: 40px; /* This pushes the content down */
 }
+
+
+.filter-switch {
+  margin-left: auto
+
+}
