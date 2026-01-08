@@ -40,34 +40,12 @@ function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying 
 }
 
 //tasks { id, text, checked, active}
-function TodoPage({tasks,setTasks}) {
+function TodoPage({tasks,setTasks,setHistory}) {
 
     const [newtask, setNewTask] = useState("");
     const [currImage, setCurrentImage] = useState("lookbackmorning.PNG")
 
     const AnimationRef = useRef();
-    const prevTasksRef = useRef(tasks);
-
-    useEffect(() => {
-        localStorage.setItem("habits_list", JSON.stringify(tasks));
-    }, [tasks]);
-
-    useEffect(()=> { //If a new checkbox is ticked play animation
-        const prevTasks = prevTasksRef.current ?? [];
-        
-        const numPrevChecked = prevTasks.filter((prevTask)=>
-            prevTask.checked
-        )
-        const numCurrentchecked = tasks.filter((task)=>
-            task.checked
-        )
-        if (numCurrentchecked.length > numPrevChecked.length){
-            AnimationRef.current.play()
-        }
-        
-        prevTasksRef.current = tasks
-
-    }, [tasks]);
 
     useEffect(()=> { //changes image based on time
         const hour = new Date().getHours()
@@ -103,10 +81,23 @@ function TodoPage({tasks,setTasks}) {
     }
 
     function updateCheck(taskid){
-        setTasks((prevTasks)=>
-            prevTasks.map((task)=>
-                task.id==taskid?{...task, checked: !task.checked}:task
-            ))
+
+        const taskToUpdate = tasks.find(t => t.id === taskid);
+        
+        if (taskToUpdate && !taskToUpdate.checked) {
+            AnimationRef.current?.play();
+
+            setHistory((prevHistory) => {
+                const today = new Date().toLocaleDateString();
+                const existingTasks = prevHistory[today] || [];
+
+                return {...prevHistory, [today]: [...existingTasks, taskToUpdate.text]};
+            });
+        }
+
+        setTasks(prevTasks => prevTasks.map(task => 
+            task.id === taskid? { ...task, checked: !task.checked }: task
+        ));
     }
 
     return (

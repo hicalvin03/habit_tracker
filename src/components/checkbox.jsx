@@ -3,7 +3,7 @@ import './checkbox.css'
 function CustomCheckBox({id, updateCheck, checked}) {
     return (
         <div className="checkbox-wrapper">
-            <input type="checkbox" className="check" checked={checked} id={id} onClick={()=>updateCheck(id)}/>
+            <input type="checkbox" className="check" checked={checked} id={id} onChange={()=>updateCheck(id)}/>
             <label htmlFor={id} className="label">
                 <svg width="45" height="45" viewBox="0 0 95 95">
                     <rect x="30" y="20" width="50" height="50" stroke="black" fill="none" />

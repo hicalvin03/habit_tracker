@@ -38,15 +38,5 @@
 #option2:checked ~ .background {
   left: 50%;
 }
-#option1:checked + label[for="option1"] {
-  color: #212121;
-  font-weight: bold;
-}
-#option2:checked + label[for="option2"] {
-  color: #212121;
-  font-weight: bold;
-}
-#option1:not(:checked) + label[for="option1"],
-#option2:not(:checked) + label[for="option2"] {
-  color: #7d7d7d;
-}
+
+

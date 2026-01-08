@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import TodoPage from './pages/Todo'
 import CalendarPage from './pages/Calendar'
@@ -8,11 +8,24 @@ function App() {
 
   //tasks { id, text, checked, active}
   const [tasks, setTasks] = useState(()=>{
-        const savedTasks = localStorage.getItem("habits_list");
-        return savedTasks ? JSON.parse(savedTasks) : [];
+      const savedTasks = localStorage.getItem("habits_list");
+      return savedTasks ? JSON.parse(savedTasks) : [];
+  });
+
+  const [history,setHistory] = useState(()=>{
+      const savedHistory = localStorage.getItem("habits_hitsory")
+      return savedHistory ? Json.parse(savedHistory) : {};
   });
   
   const [page,setPage] = useState("TodoPage");
+
+  useEffect(() => {
+          localStorage.setItem("habits_list", JSON.stringify(tasks));
+      }, [tasks]);
+
+  useEffect(() => {
+          localStorage.setItem("habits_history", JSON.stringify(history));
+      }, [history]);
 
   return (
     <>
@@ -23,7 +36,7 @@ function App() {
             />
       </nav>  
       {page === "TodoPage" ? (
-        <TodoPage tasks={tasks} setTasks={setTasks} />
+        <TodoPage tasks={tasks} setTasks={setTasks} setHistory={setHistory} />
       ) : (
         <CalendarPage />
       )}
