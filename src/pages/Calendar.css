@@ -1,8 +1,25 @@
 .calendarPage{
     display:flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
 }
+
+.listDisplay{
+  width: 360px;
+  background-color: #A5E1A6;
+  border-radius: 20px;
+  padding: 1% 3%;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.2em;
+  text-decoration: underline;
+}
+
 
 .react-calendar abbr {
   text-decoration: none;
@@ -48,10 +65,17 @@
 
 .react-calendar__tile--active {
   background: #22c55e;
-  color: white;
+  color:	#c60aff;
 }
 
 .react-calendar__tile--now {
   background: #dcfce7;
   font-weight: 600;
 }
+
+.task-lvl-0 { background-color: whitesmoke !important; }
+.task-lvl-1 { background-color: #9be9a8 !important; }
+.task-lvl-2 { background-color: #40c463 !important; }
+.task-lvl-3 { background-color: #30a14e !important; }
+.task-lvl-4 { background-color: #298842 !important; }
+.task-lvl-5 { background-color: #216e39 !important;}

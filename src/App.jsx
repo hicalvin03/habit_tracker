@@ -4,6 +4,14 @@ import TodoPage from './pages/Todo'
 import CalendarPage from './pages/Calendar'
 import NavButton from './components/navbutton'
 
+
+function convertToYYYYMMDD(dateObj) { //turn into string "year-month-day"
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 function App() {
 
   //tasks { id, text, checked, active}
@@ -12,9 +20,10 @@ function App() {
       return savedTasks ? JSON.parse(savedTasks) : [];
   });
 
-  const [history,setHistory] = useState(()=>{
-      const savedHistory = localStorage.getItem("habits_hitsory")
-      return savedHistory ? Json.parse(savedHistory) : {};
+  //history {2026-01-08: {task1,task2,...}}
+  const [history, setHistory] = useState(()=>{
+      const savedHistory = localStorage.getItem("habits_history")
+      return savedHistory ? JSON.parse(savedHistory) : {};
   });
   
   const [page,setPage] = useState("TodoPage");
@@ -36,9 +45,9 @@ function App() {
             />
       </nav>  
       {page === "TodoPage" ? (
-        <TodoPage tasks={tasks} setTasks={setTasks} setHistory={setHistory} />
+        <TodoPage tasks={tasks} setTasks={setTasks} setHistory={setHistory} convertToYYYYMMDD={convertToYYYYMMDD}/>
       ) : (
-        <CalendarPage />
+        <CalendarPage history={history} setHistory={setHistory} convertToYYYYMMDD={convertToYYYYMMDD}/>
       )}
 
     </>

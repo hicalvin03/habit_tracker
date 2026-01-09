@@ -40,13 +40,12 @@ function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying 
 }
 
 //tasks { id, text, checked, active}
-function TodoPage({tasks,setTasks,setHistory}) {
+function TodoPage({tasks,setTasks,setHistory,convertToYYYYMMDD}) {
 
     const [newtask, setNewTask] = useState("");
     const [currImage, setCurrentImage] = useState("lookbackmorning.PNG")
 
     const AnimationRef = useRef();
-
     useEffect(()=> { //changes image based on time
         const hour = new Date().getHours()
         if (hour < 12){
@@ -88,7 +87,7 @@ function TodoPage({tasks,setTasks,setHistory}) {
             AnimationRef.current?.play();
 
             setHistory((prevHistory) => {
-                const today = new Date().toLocaleDateString();
+                const today = convertToYYYYMMDD(new Date());
                 const existingTasks = prevHistory[today] || [];
 
                 return {...prevHistory, [today]: [...existingTasks, taskToUpdate.text]};
