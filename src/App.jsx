@@ -27,7 +27,6 @@ function App() {
   });
   
   const [page,setPage] = useState("TodoPage");
-
   useEffect(() => {
           localStorage.setItem("habits_list", JSON.stringify(tasks));
       }, [tasks]);

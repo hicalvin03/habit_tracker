@@ -4,9 +4,6 @@ import './Calendar.css'
 import { useState } from 'react';
 import { jsx } from 'react/jsx-runtime';
 
-
-
-
 function DisplayTasks({history,date}){
   
 const tasksOnDate = history[date] || []; // If empty use empty array
