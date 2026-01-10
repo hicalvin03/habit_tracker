@@ -1,5 +1,7 @@
 # React + Vite
 
+checkout the website here: https://hicalvin03.github.io/habit_tracker/
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
