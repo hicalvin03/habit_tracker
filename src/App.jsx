@@ -14,11 +14,27 @@ function convertToYYYYMMDD(dateObj) { //turn into string "year-month-day"
 
 function App() {
 
-  //tasks { id, text, checked, active}
-  const [tasks, setTasks] = useState(()=>{
-      const savedTasks = localStorage.getItem("habits_list");
-      return savedTasks ? JSON.parse(savedTasks) : [];
-  });
+  //tasks { id, isSeparator, text, checked, active}
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("habits_list");
+    let parsedTasks = savedTasks ? JSON.parse(savedTasks) : [];
+
+    const hasSeparator = parsedTasks.some(t => t.isSeparator);
+
+    if (!hasSeparator) {
+        // Inject the separator if it doesn't exist
+        const separator = {
+            id: 'task-separator-id', 
+            isSeparator: true,
+            text: "Separator",
+            checked: false,
+            active: true
+        };
+        parsedTasks = [...parsedTasks, separator];
+    }
+
+    return parsedTasks;
+});
 
   //history {2026-01-08: {task1,task2,...}}
   const [history, setHistory] = useState(()=>{

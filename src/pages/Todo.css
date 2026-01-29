@@ -82,4 +82,36 @@ button:hover {
 }
 
 
+.task-separator {
+    width: 100%;
+    padding: 10px 0;
+}
+
+.dotted-line {
+    border: none;
+    border-top: 3px dotted red;
+    margin: 0;
+    width: 100%;
+}
+
+li:has(.task-separator) {
+  background-color: transparent !important; 
+  border: none !important;
+}
+.drag-handle {
+    /* The "hidden" state: a tiny dot */
+    font-size: 1px;
+    opacity: 0;
+    cursor: grab;
+    margin-right: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    transition: font-size 0.1s, opacity 0.1s;
+}
+
+/* When you hover over the task row (li), the handle becomes a real icon */
+li:hover .drag-handle {
+    font-size: 1.2rem; /* Normal emoji size */
+    opacity: 1;
+}
 

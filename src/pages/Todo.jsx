@@ -39,7 +39,7 @@ function FormInput({ newtask, setNewTask, addTask }) {
     );
 }
 
-export function SortableTaskItem({id,children}){
+export function SortableTaskItem({id,children,isSeparator}){
     const {
         attributes,
         listeners,
@@ -56,7 +56,7 @@ export function SortableTaskItem({id,children}){
     return (
         <li ref={setNodeRef} style={style}>
             <span className="drag-handle" {...attributes} {...listeners}>
-                ✏️
+             📑
             </span>
             {children}
         </li>
@@ -67,17 +67,27 @@ export function SortableTaskItem({id,children}){
 function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying each task item.
     return(
         tasks.map((task)=> 
-            <SortableTaskItem key={task.id} id={task.id}>
-                <CustomCheckBox
-                    id={task.id}
-                    updateCheck={updateCheck}
-                    checked={task.checked}
-                />
-                <span className="task-text">{task.text}</span>
-                <DeleteButton
-                    taskid={task.id}
-                    deleteTask={deleteTask}
-                />
+            <SortableTaskItem key={task.id} id={task.id} isSeparator={task.isSeparator}>
+                {task.isSeparator ? (
+                    /* Red Dotted Line */
+                    <div className="task-separator">
+                        <hr className="dotted-line" />
+                    </div>
+                ) : (
+                    /* Regular Task */
+                    <>
+                        <CustomCheckBox
+                            id={task.id}
+                            updateCheck={updateCheck}
+                            checked={task.checked}
+                        />
+                        <span className="task-text">{task.text}</span>
+                        <DeleteButton
+                            taskid={task.id}
+                            deleteTask={deleteTask}
+                        />
+                    </>
+                )}
             </SortableTaskItem>
         )
     )
@@ -128,6 +138,7 @@ function TodoPage({tasks,setTasks,setHistory,convertToYYYYMMDD}) {
                 ...tasks,
                 {
                     id: crypto.randomUUID(), //unique id to every task
+                    isSeparator: false,
                     text: newtask,
                     checked: false,
                     active: true
