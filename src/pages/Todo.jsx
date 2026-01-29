@@ -5,6 +5,24 @@ import SubmitButton from "../components/button"
 import DeleteButton from "../components/deletebutton"
 import NoFace from "../components/nofaceAnimation"
 
+//Imports for sortablelist/dragging of items
+import {
+  DndContext, 
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
+
 function FormInput({ newtask, setNewTask, addTask }) {
     return (
         <form className="form" onSubmit={addTask}>
@@ -21,10 +39,35 @@ function FormInput({ newtask, setNewTask, addTask }) {
     );
 }
 
+export function SortableTaskItem({id,children}){
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({id: id});
+    
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+    
+    return (
+        <li ref={setNodeRef} style={style}>
+            <span className="drag-handle" {...attributes} {...listeners}>
+                ✏️
+            </span>
+            {children}
+        </li>
+    );
+
+}
+
 function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying each task item.
     return(
         tasks.map((task)=> 
-            <li key={task.id}>
+            <SortableTaskItem key={task.id} id={task.id}>
                 <CustomCheckBox
                     id={task.id}
                     updateCheck={updateCheck}
@@ -35,7 +78,8 @@ function TaskItem({tasks,deleteTask,updateCheck}){ //Responsible for displaying 
                     taskid={task.id}
                     deleteTask={deleteTask}
                 />
-            </li>)
+            </SortableTaskItem>
+        )
     )
 }
 
@@ -44,6 +88,25 @@ function TodoPage({tasks,setTasks,setHistory,convertToYYYYMMDD}) {
 
     const [newtask, setNewTask] = useState("");
     const [currImage, setCurrentImage] = useState("lookbackmorning.PNG")
+
+    //Sensors for dragging
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+    //function used for dragging events.
+    function handleDragEnd(event) {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        setTasks((tasks) => {
+            const oldIndex = tasks.findIndex(t => t.id === active.id);
+            const newIndex = tasks.findIndex(t => t.id === over.id);
+            return arrayMove(tasks, oldIndex, newIndex);
+        });
+    }
 
     const AnimationRef = useRef();
     useEffect(()=> { //changes image based on time
@@ -109,13 +172,24 @@ function TodoPage({tasks,setTasks,setHistory,convertToYYYYMMDD}) {
                     setNewTask={setNewTask} 
                     addTask={addTask} 
                 />
-                <ol id="tasks-list">
-                    <TaskItem 
-                    tasks={tasks}
-                    deleteTask={deleteTask}
-                    updateCheck={updateCheck}
-                    />
-                </ol>
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                >
+                    <SortableContext
+                        items={tasks.map(t => t.id)}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        <ol id="tasks-list">
+                            <TaskItem
+                                tasks={tasks}
+                                deleteTask={deleteTask}
+                                updateCheck={updateCheck}
+                            />
+                        </ol>
+                    </SortableContext>
+                </DndContext>
             </div>
 
             <div className="rightsideBar">
